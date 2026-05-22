@@ -1,0 +1,77 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+
+# dotenv environment variables
+.env
+.env.*
+
+# Pytest
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+
+# Coverage
+.coverage
+htmlcov/
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IPython
+profile_default/
+
+# VS Code
+.vscode/
+
+# JetBrains
+.idea/
+
+# Streamlit
+.streamlit/
+
+# Logs and databases
+*.log
+*.sqlite3
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Secrets and keys
+*.pem
+*.key
+
+# Optional: ignore local editor swap files
+*~
+*.swp
+
+# Ignore generated report downloads
+research_report_*.md
