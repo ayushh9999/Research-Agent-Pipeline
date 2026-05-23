@@ -20,6 +20,12 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+if writer_chain is None or critic_chain is None:
+    st.error(
+        "Gemini is not configured. Add GEMINI_API_KEY to Streamlit secrets or your local .env file, then reload the app."
+    )
+    st.stop()
+
 # ── Custom CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>

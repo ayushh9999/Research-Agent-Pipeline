@@ -46,11 +46,13 @@ def _get_setting(*names: str) -> str | None:
 model_name = _get_setting("GEMINI_MODEL") or "gemini-2.5-flash"
 gemini_api_key = _get_setting("GEMINI_API_KEY", "GEMINI-API-KEY")
 
-llm = ChatGoogleGenerativeAI(
-    model=model_name,
-    api_key=gemini_api_key,
-    temperature=0
-)
+llm = None
+if gemini_api_key:
+    llm = ChatGoogleGenerativeAI(
+        model=model_name,
+        api_key=gemini_api_key,
+        temperature=0
+    )
 
 # 1st agent (tavily search)
 def build_search_agent():
@@ -60,10 +62,12 @@ def build_search_agent():
     `tools.py` and uses the shared `llm` instance. It accepts the
     standard LangChain agent invocation input (messages dict).
     """
-    return create_agent(
-        model=llm,
-        tools=[web_search],
-    )
+    if llm is None:
+        raise RuntimeError(
+            "GEMINI_API_KEY is not configured. Add it to Streamlit secrets or your .env file."
+        )
+
+    return create_agent(model=llm, tools=[web_search])
 
 # 2nd agent (scrape url)
 def build_reader_agent():
@@ -72,10 +76,12 @@ def build_reader_agent():
     The reader agent is intended to receive a URL or short instruction and
     use the `scrape_url` tool to fetch and return cleaned page text.
     """
-    return create_agent(
-        model=llm,
-        tools=[scrape_url],
-    )
+    if llm is None:
+        raise RuntimeError(
+            "GEMINI_API_KEY is not configured. Add it to Streamlit secrets or your .env file."
+        )
+
+    return create_agent(model=llm, tools=[scrape_url])
 
 #Writer chain
 writer_prompt = ChatPromptTemplate.from_messages([
@@ -96,7 +102,7 @@ Structure the report as:
 Be detailed, factual and professional."""),
 ])
 
-writer_chain = writer_prompt | llm | StrOutputParser()
+writer_chain = (writer_prompt | llm | StrOutputParser()) if llm is not None else None
 
 #Critic chain
 critic_prompt = ChatPromptTemplate.from_messages([
@@ -122,4 +128,4 @@ One line verdict:
 ..."""),
 ])
 
-critic_chain = critic_prompt | llm | StrOutputParser()
+critic_chain = (critic_prompt | llm | StrOutputParser()) if llm is not None else None
