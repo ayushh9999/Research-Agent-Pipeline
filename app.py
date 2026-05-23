@@ -22,7 +22,7 @@ st.set_page_config(
 
 if writer_chain is None or critic_chain is None:
     st.error(
-        "Gemini is not configured. Add GEMINI_API_KEY to Streamlit secrets or your local .env file, then reload the app."
+        "Gemini is not configured. In Streamlit Cloud, open Manage app -> Settings -> Secrets and add GEMINI_API_KEY, then restart the app."
     )
     st.stop()
 
@@ -112,6 +112,13 @@ html, body, [class*="css"] {
     font-size: 1rem !important;
     padding: 0.75rem 1rem !important;
     transition: border-color 0.2s, box-shadow 0.2s !important;
+}
+.stTextInput > div > div > input::placeholder,
+.stTextInput > div > div > input::-webkit-input-placeholder,
+.stTextInput > div > div > input::-moz-placeholder,
+.stTextInput > div > div > input:-ms-input-placeholder {
+    color: #bfb5a6 !important;
+    opacity: 1 !important;
 }
 .stTextInput > div > div > input:focus {
     border-color: #ff8c32 !important;
