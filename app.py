@@ -279,6 +279,19 @@ html, body, [class*="css"] {
     border-bottom: 1px solid rgba(80,200,120,0.15);
 }
 
+/* Rendered markdown/report text - ensure high contrast on dark theme */
+.report-text, .report-text h1, .report-text h2, .report-text h3, .report-text h4, .report-text p, .report-text li {
+    color: #dcd6ce !important;
+    line-height: 1.8 !important;
+}
+
+/* Make links and headings stand out */
+.report-text h1, .report-text h2, .report-text h3 {
+    color: #f0ebe0 !important;
+}
+.report-text a { color: #ffb37a !important; }
+
+
 /* ── Progress text ── */
 .stSpinner > div { color: #ff8c32 !important; }
 
@@ -510,7 +523,7 @@ if r:
         <div class="report-panel">
             <div class="panel-label orange">📝 Final Research Report</div>
         """, unsafe_allow_html=True)
-        st.markdown(r["writer"])   # render markdown natively
+        st.markdown(f'<div class="report-text">{r["writer"]}</div>', unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
         # Download
@@ -527,7 +540,7 @@ if r:
         <div class="feedback-panel">
             <div class="panel-label green">🧐 Critic Feedback</div>
         """, unsafe_allow_html=True)
-        st.markdown(r["critic"])
+        st.markdown(f'<div class="report-text">{r["critic"]}</div>', unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
 
