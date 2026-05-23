@@ -24,11 +24,31 @@ from rich import print
 
 load_dotenv()
 
-model_name = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+def _get_setting(*names: str) -> str | None:
+    for name in names:
+        value = os.getenv(name)
+        if value:
+            return value
+
+    try:
+        import streamlit as st
+
+        for name in names:
+            value = st.secrets.get(name)
+            if value:
+                return value
+    except Exception:
+        pass
+
+    return None
+
+
+model_name = _get_setting("GEMINI_MODEL") or "gemini-2.5-flash"
+gemini_api_key = _get_setting("GEMINI_API_KEY", "GEMINI-API-KEY")
 
 llm = ChatGoogleGenerativeAI(
     model=model_name,
-    api_key=os.getenv("GEMINI_API_KEY") or os.getenv("GEMINI-API-KEY"),
+    api_key=gemini_api_key,
     temperature=0
 )
 

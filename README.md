@@ -41,12 +41,12 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-3) Create a `.env` file in the project root with required environment variables
+3) Create a `.env` file in the project root with required environment variables, or add the same keys to Streamlit Cloud secrets
 
 ```
 GEMINI_API_KEY=your_gemini_api_key_here
 GEMINI_MODEL=gemini-2.5-flash
-TAVILY-API-KEY=your_tavily_api_key_here
+TAVILY_API_KEY=your_tavily_api_key_here
 ```
 
 4) Run the Streamlit UI
@@ -71,7 +71,8 @@ python pipeline.py
 - `GEMINI_API_KEY` (required to use the Gemini models via the langchain integration)
 - `GEMINI-API-KEY` (alternate name used by the code)
 - `GEMINI_MODEL` (optional, defaults to `gemini-2.5-flash`)
-- `TAVILY-API-KEY` (optional; required if using `web_search` tool)
+- `TAVILY_API_KEY` (preferred; required if using the `web_search` tool)
+- `TAVILY-API-KEY` (legacy alias still supported)
 
 Keep secrets in a `.env` file and ensure `.gitignore` contains `.env` (this repo includes a sensible `.gitignore`).
 

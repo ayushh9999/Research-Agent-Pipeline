@@ -18,15 +18,40 @@ from rich import print
 
 load_dotenv()
 
-# Tavily client used to perform simple web searches. API key comes from
-# the environment variable `TAVILY-API-KEY`.
-tavily_client = TavilyClient(api_key=os.getenv("TAVILY-API-KEY"))
+def _get_setting(*names: str) -> str | None:
+    for name in names:
+        value = os.getenv(name)
+        if value:
+            return value
+
+    try:
+        import streamlit as st
+
+        for name in names:
+            value = st.secrets.get(name)
+            if value:
+                return value
+    except Exception:
+        pass
+
+    return None
+
+
+# Tavily client used to perform simple web searches.
+tavily_api_key = _get_setting("TAVILY_API_KEY", "TAVILY-API-KEY")
+tavily_client = TavilyClient(api_key=tavily_api_key) if tavily_api_key else None
 
 @tool
 def web_search(query: str) -> str:
     """Perform a web search for recent and reliable information on a topic.
         Returns titles, URLs and snippets of the top search results.
     """
+    if tavily_client is None:
+        return (
+            "Tavily API key is not configured. Set TAVILY_API_KEY in your "
+            "Streamlit secrets or environment variables to enable web search."
+        )
+
     results = tavily_client.search(query=query, max_results=5)
     
     out=[]
